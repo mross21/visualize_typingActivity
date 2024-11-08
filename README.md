@@ -1,3 +1,3 @@
-# Typing activity dotplot
+# Visualize typing activity
 
-Plot smartphone typing activity by hour and day per subject. 
+Plot smartphone typing activity by hour and day per subject using color coded dot plot.
