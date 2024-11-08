@@ -24,19 +24,18 @@ for file in all_files:
     df = pd.read_parquet(file, engine='pyarrow')
     user = df['userID'].unique()[0]
     print(user)
-    if user != 80:
+    
+    # select user
+    u = 0
+    if user != u:
         continue
-    # try:
-    #     diag = df['diagnosisGroup'].unique()[0]
-    # except KeyError:
-    #     diag = 'nan'
-    diag = 'Major Depressive Disorder'
+
+    diag = '' # insert diagnosis for user here
 
     df['hour'] = pd.to_datetime(df['keypressTimestampLocal']).dt.hour
     df['kpCountPerHour'] = df.groupby(['hour','dayNumber'])['IKD'].transform('count')
     df['horiz_flag'] = np.where(df['upright'] == 'laying_down',1,0)
     df['percHoriz'] = df.groupby(['hour','dayNumber'])['horiz_flag'].transform('mean')
-    
 
     plt.figure(figsize = (20,20))
     plt.style.use('ggplot')
@@ -46,18 +45,15 @@ for file in all_files:
     plt.scatter(df['hour'], df['date'], alpha = 1, s=df['kpCountPerHour'], c=df['percHoriz'])
     cbar = plt.colorbar(orientation='vertical')
     cbar.set_label(label='Fraction Laying Down',size=30, rotation=270,labelpad=40)
-    cbar.ax.tick_params(labelsize=20) #, labelleft=True,labelright=False)
+    cbar.ax.tick_params(labelsize=20)
     plt.xlabel('Hour',size=30)
     plt.title('User {} ({})'.format(user, diag),size=30)
     plt.ylabel('Date', size=30)
     plt.yticks(fontsize=20)
     plt.xticks(fontsize=20)
-    plt.savefig(pathOut+'user_{}.png'.format(user))
-    # plt.show()
-
-    plt.close()
+    # plt.savefig(pathOut+'user_{}.png'.format(user))
+    plt.show()
+    # plt.close()
     break
     
 print('finish')
-
-# %%
